@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView text = findViewById(R.id.text);
         ImageView ball = findViewById(R.id.ball);
-        if (count >= 3) {
+        if (count >= 1.5) {
             double random = Math.floor(Math.random() * Math.floor(21));
             int answer = (int) Math.round(random);
             if (answer<=0) {
