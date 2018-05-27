@@ -3,6 +3,7 @@ package fr.wcs.thedecider;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,16 +17,16 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    HashMap<Integer, String> mDecission = new HashMap<Integer, String>();
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
-    HashMap<Integer, String> mDecission = new HashMap<Integer, String>();
 
     @Override
     public void onResume() {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -93,18 +94,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void handleShakeEvent(int count) {
 
+        MediaPlayer sound = MediaPlayer.create(this, R.raw.reveal_sound);
+
         TextView text = findViewById(R.id.text);
         ImageView ball = findViewById(R.id.ball);
+
         if (count >= 1.5) {
             double random = Math.floor(Math.random() * Math.floor(21));
             int answer = (int) Math.round(random);
-            if (answer<=0) {
+            if (answer <= 0) {
                 answer = 1;
             }
 
             text.setVisibility(View.VISIBLE);
             ball.setImageResource(R.drawable.ball_back);
             text.setText(mDecission.get(answer));
+            sound.start();
             Animation startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
             text.startAnimation(startAnimation);
 
